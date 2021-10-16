@@ -55,25 +55,20 @@ function createPlayer(playerObj) {
 	return $player;
 }
 
+function randomHPHit () {
+	return Math.ceil(Math.random() * 20);
+}
+
 function changeHP(player) {
 	const $playerLife = document.querySelector('.player' + player.player + ' .life');
-	player.hp -=Math.ceil(Math.random() * 20);
+	player.hp -= randomHPHit();
 	
 	if (player.hp <= 0) {
 		player.hp = 0;
 		$playerLife.style.width = 0;
-		$arenas.appendChild(playerWin(checkWinner(player)));
-		$randomButton.disabled = true;
 	} else {
 		$playerLife.style.width = player.hp + '%';
 	}
-}
-
-function checkWinner(player) {
-	if (player.player === 1) {
-		return player2.name;
-	}
-	return player1.name;
 }
 
 function playerLose(name) {
@@ -85,9 +80,20 @@ function playerLose(name) {
 
 function playerWin(name) {
 	const $winTitle = createElement('div', 'loseTitle');
-	$winTitle.innerText = name + ' win';
-
+	$winTitle.innerText = name === 'draw' ? name : name + ' win';
 	return $winTitle;
+}
+
+function checkWinner(player1, player2) {
+	if (player1.hp === 0 && player2.hp > 0) {
+		return player2.name;
+	} else if (player1.hp > 0 && player2.hp === 0) {
+		return player1.name;
+	} else if (player1.hp === 0 && player2.hp === 0) {
+		return 'draw';
+	} else {
+		return null;
+	}
 }
 
 $randomButton.addEventListener('click', function(e) {
@@ -95,6 +101,12 @@ $randomButton.addEventListener('click', function(e) {
 	console.log('rand botom');
 	changeHP(player1);
 	changeHP(player2);
+	
+	const winnerName = checkWinner(player1, player2);
+	if (winnerName) {
+		$arenas.appendChild(playerWin(winnerName));
+		$randomButton.disabled = true;
+	}
 })
 
 $arenas.appendChild(createPlayer(player1));
