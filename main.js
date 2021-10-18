@@ -8,7 +8,10 @@ const player1 = {
 	weapon: ['sword', 'bow'],
 	attack: function() {
 		console.log(player1.name + ' ' + 'Fight...');
-	}
+	},
+	changeHP: changeHP,
+	elHP: elHP,
+	renderHP: renderHP
 }
 const player2 = {
 	player: 2,
@@ -18,7 +21,10 @@ const player2 = {
 	weapon: ['tessen', 'shuriken'],
 	attack: function() {
 		console.log(player2.name + ' ' + 'Fight...');
-	}
+	},
+	changeHP: changeHP,
+	elHP: elHP,
+	renderHP: renderHP
 }
 
 const $arenas = document.querySelector('.arenas');
@@ -59,20 +65,19 @@ function randomHPHit (num) {
 	return Math.ceil(Math.random() * num);
 }
 
-function changeHP(player) {
-	const $playerLife = document.querySelector('.player' + player.player + ' .life');
-	player.hp -= randomHPHit(20);
-	
-	if (player.hp <= 0) {
-		player.hp = 0;
+function changeHP(hpAmount) {
+	this.hp -= hpAmount;
+	if (this.hp <= 0) {
+		this.hp = 0;
 	} 
-	$playerLife.style.width = player.hp + '%';
-	
 }
 
-function elHP() {}
+function elHP() {
+	return document.querySelector('.player' + this.player + ' .life');
+}
 function renderHP() {
-
+	const $lifeEl = this.elHP();
+	$lifeEl.style.width = this.hp+'%';
 }
 
 function playerWins(name) {
@@ -82,8 +87,13 @@ function playerWins(name) {
 }
 
 $randomButton.addEventListener('click', function(e) {
-	changeHP(player1);
-	changeHP(player2);
+	player1.changeHP(randomHPHit(20));
+	player2.changeHP(randomHPHit(20));
+	player1.renderHP();
+	player2.renderHP();
+	
+	// changeHP(player1);
+	// changeHP(player2);
 	
 	if (player1.hp === 0 || player2.hp === 0) {
 		$randomButton.disabled = true;
