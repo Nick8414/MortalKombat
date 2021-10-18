@@ -38,6 +38,17 @@ function createElement(tag, className) {
 	return $tag;
 }
 
+function createReloadButton() {
+	const $buttonWrap = createElement('div', 'reloadWrap');
+	const $button = createElement('button', 'button');
+	$button.innerText = 'Restart';
+	$buttonWrap.appendChild($button);
+	$button.addEventListener('click', function() {
+		window.location.reload();
+	})
+	return $buttonWrap;
+}
+
 function createPlayer(playerObj) {
 	const $player = createElement('div', 'player' + playerObj.player);
 	const $progressbar = createElement('div', 'progressbar');
@@ -97,6 +108,7 @@ $randomButton.addEventListener('click', function(e) {
 	
 	if (player1.hp === 0 || player2.hp === 0) {
 		$randomButton.disabled = true;
+		$arenas.appendChild(createReloadButton());
 	}
 
 	if (player1.hp === 0 && player1.hp < player2.hp) {
