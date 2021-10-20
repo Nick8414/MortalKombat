@@ -105,52 +105,28 @@ function playerWins(name) {
 	return $winTitle;
 }
 
-// $randomButton.addEventListener('click', function(e) {
-// 	player1.changeHP(randomHPHit(20));
-// 	player2.changeHP(randomHPHit(20));
-// 	player1.renderHP();
-// 	player2.renderHP();
-	
-// 	if (player1.hp === 0 || player2.hp === 0) {
-// 		$randomButton.disabled = true;
-// 		$arenas.appendChild(createReloadButton());
-// 	}
-
-// 	if (player1.hp === 0 && player1.hp < player2.hp) {
-// 		$arenas.appendChild(playerWins(player2.name));
-// 	} else if (player2.hp === 0 && player2.hp < player1.hp) {
-// 		$arenas.appendChild(playerWins(player1.name));
-// 	} else if (player1.hp === 0 && player2.hp === 0) {
-// 		$arenas.appendChild(playerWins());
-// 	}
-// })
-
 $arenas.appendChild(createPlayer(player1));
 $arenas.appendChild(createPlayer(player2));
 
 function enemyAttack() {
-	const hit = ATTACK[randomHPHit(3) - 1];
-	const defence = ATTACK[randomHPHit(3) - 1];
+	const hitDirection = () => ATTACK[randomHPHit(3) - 1];
+	const hit = hitDirection();
+	const defence = hitDirection();
 	
 	return {
 		value: randomHPHit(HIT[hit]),
 		hit,
 		defence,
 	}
-	
-	
-	
 }
 
 $formFight.addEventListener('submit', function (e) {
 	e.preventDefault();
-	console.dir($formFight);
 	const enemy = enemyAttack();
 
 	const attack = {};
 
 	for (let item of $formFight) {
-		console.log(item);
 		
 		if (item.checked && item.name === 'hit') {
 			attack.value = randomHPHit(HIT[item.value]);
@@ -164,12 +140,28 @@ $formFight.addEventListener('submit', function (e) {
 		item.checked = false;
 	}
 
-	console.log('a ', attack);
-	console.log('e ', enemy);
-	
-	
+	if (attack.hit !== enemy.defence) {
+		player2.changeHP(attack.value);
+	}
 
+	if (enemy.hit !== attack.defence) {
+		player1.changeHP(enemy.value);
+	}
 
-	
+	player1.renderHP();
+	player2.renderHP();
+
+	if (player1.hp === 0 || player2.hp === 0) {
+		$randomButton.disabled = true;
+		$arenas.appendChild(createReloadButton());
+	}
+
+	if (player1.hp === 0 && player1.hp < player2.hp) {
+		$arenas.appendChild(playerWins(player2.name));
+	} else if (player2.hp === 0 && player2.hp < player1.hp) {
+		$arenas.appendChild(playerWins(player1.name));
+	} else if (player1.hp === 0 && player2.hp === 0) {
+		$arenas.appendChild(playerWins());
+	}
 })
 
