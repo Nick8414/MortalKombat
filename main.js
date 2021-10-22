@@ -142,14 +142,13 @@ $formFight.addEventListener('submit', function (e) {
 
 	if (attack.hit !== enemy.defence) {
 		player2.changeHP(attack.value);
+		player2.renderHP();
 	}
 
 	if (enemy.hit !== attack.defence) {
 		player1.changeHP(enemy.value);
+		player1.renderHP();
 	}
-
-	player1.renderHP();
-	player2.renderHP();
 
 	if (player1.hp === 0 || player2.hp === 0) {
 		$randomButton.disabled = true;
