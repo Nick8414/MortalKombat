@@ -1,5 +1,5 @@
 'use strict'
-import { getTime, randomNumber } from "./utils.js";
+// import { getTime, randomNumber } from "./utils.js";
 import { logs } from "./appData.js";
 
 export function createElement(tag, className) {

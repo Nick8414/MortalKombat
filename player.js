@@ -5,8 +5,8 @@ class Player {
     this.hp = props.hp;
     this.img = props.img;
   }
-	
-  attack() {
+
+  attack = () => {
     console.log(this.name + " " + "Fight...");
   }
 
@@ -40,6 +40,3 @@ export const player2 = new Player({
   hp: 100,
   img: "http://reactmarathon-api.herokuapp.com/assets/kitana.gif",
 });
-
-player1.attack();
-console.log(player1);
