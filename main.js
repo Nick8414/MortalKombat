@@ -2,7 +2,8 @@
 
 import { enemyAttack, playerAttack } from './actionAttack.js';
 import { createElement, generateLogs, showResult, createReloadButton } from './domManipulate.js';
-import { subZero as player1, kitana as player2 } from './players.js';
+// import { subZero as player1, kitana as player2 } from './players.js';
+import { player1, player2 } from './player.js';
 
 const $arenas = document.querySelector('.arenas');
 const $randomButton = document.querySelector('.button');
