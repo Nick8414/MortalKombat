@@ -8,17 +8,17 @@ const $arenas = document.querySelector('.arenas');
 const $randomButton = document.querySelector('.button');
 const $formFight = document.querySelector('.control');
 
-function createPlayer(playerObj) {
-	const $player = createElement('div', 'player' + playerObj.player);
+function createPlayer({ player, hp, name, img }) {
+	const $player = createElement('div', `player${player}`);
 	const $progressbar = createElement('div', 'progressbar');
 	const $life = createElement('div', 'life');
 	const $name = createElement('div', 'name');
 	const $character = createElement('div', 'character');
 	const $img = createElement('img');
 
-	$life.style.width = '100%';
-	$name.innerText = playerObj.name;
-	$img.src = playerObj.img;
+	$life.style.width = hp + '%';
+	$name.innerText = name;
+	$img.src = img;
 
 	$player.appendChild($progressbar);
 	$player.appendChild($character);
@@ -38,14 +38,8 @@ generateLogs('start', player1, player2);
 
 $formFight.addEventListener('submit', function (e) {
 	e.preventDefault();
-	const enemy = enemyAttack();
-	const player = playerAttack();
-
-	console.dir(enemy);
-	console.dir(player);
-
-	const {hit: enemyHit, defence: enemyDefense, value: enemyValue} = enemy;
-	const {hit: playerHit, defence: playerDefence, value: playerValue} = player;
+	const {hit: enemyHit, defence: enemyDefense, value: enemyValue} = enemyAttack();
+	const {hit: playerHit, defence: playerDefence, value: playerValue} = playerAttack();
 
 	if (playerHit !== enemyDefense) {
 		player2.changeHP(playerValue);

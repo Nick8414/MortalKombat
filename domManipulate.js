@@ -16,7 +16,7 @@ export function playerWins(name) {
 	return $winTitle;
 };
 
-export function generateLogs(type, player1, player2, damgeAmount) {
+export function generateLogs(type, { name } = {}, { name: playerName2, hp }, damgeAmount) {
 
 	const $chat = document.querySelector('.chat');
 	const time = getTime();
@@ -25,23 +25,23 @@ export function generateLogs(type, player1, player2, damgeAmount) {
 		case 'start':
 			text = logs[type]
 				.replace('[time]', time)
-				.replace('[player1]', player1.name)
-				.replace('[player2]', player2.name);
+				.replace('[player1]', name)
+				.replace('[player2]', playerName2);
 			break;
 		case 'hit':
 			text = `${time} - ${logs[type][randomNumber(18) - 1]
-				.replace('[playerKick]', player1.name)
-				.replace('[playerDefence]', player2.name)} -${damgeAmount} [${player2.hp}/100]`;
+				.replace('[playerKick]', name)
+				.replace('[playerDefence]', playerName2)} -${damgeAmount} [${hp}/100]`;
 			break;
 		case 'defence':
 			text = `${time} - ${logs[type][randomNumber(8) - 1]
-				.replace('[playerKick]', player1.name)
-				.replace('[playerDefence]', player2.name)}`;
+				.replace('[playerKick]', name)
+				.replace('[playerDefence]', playerName2)}`;
 			break;	
 		case 'end': 
 			text = `${time} - ${logs[type][randomNumber(3) - 1]
-				.replace('[playerWins]', player1.name)
-				.replace('[playerLose]', player2.name)}`;
+				.replace('[playerWins]', name)
+				.replace('[playerLose]', playerName2)}`;
 			break;	
 		case 'draw':
 			text = `${time} - ${logs[type]}`;
