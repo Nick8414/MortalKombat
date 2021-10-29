@@ -1,14 +1,23 @@
 import { logs, HIT, ATTACK } from "./appData.js";
-import { player1, player2 } from "./player.js";
+import Player  from "./player.js";
 import Utils from "./utils.js";
 
 const { randomNumber, getTime } = new Utils();
+
+let player1;
+let player2;
 
 class Game {
   constructor() {
     this.$arenas = document.querySelector(".arenas");
     this.$randomButton = document.querySelector(".button");
     this.$formFight = document.querySelector(".control");
+  }
+
+  getPlayers = async () => {
+    const body = await fetch('https://reactmarathon-api.herokuapp.com/api/mk/players')
+      .then(res => res.json());
+      return body;
   }
 
   createElement(tag, className) {
@@ -181,7 +190,23 @@ class Game {
     });
   }
 
-  start() {
+  start = async () => {
+    const players = await this.getPlayers();
+    console.log(players);
+    const p1 = players[randomNumber(players.length) - 1];
+    const p2 = players[randomNumber(players.length) - 1];
+
+    player1 = new Player({
+      ...p1,
+      player: 1,
+      rootSelector: 'arenas'
+    });
+    player2 = new Player({
+      ...p2,
+      player: 2,
+      rootSelector: 'arenas'
+    });
+
     this.$arenas.appendChild(this.createPlayer(player1));
     this.$arenas.appendChild(this.createPlayer(player2));
 

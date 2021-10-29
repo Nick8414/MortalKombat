@@ -40,3 +40,5 @@ export const player2 = new Player({
   hp: 100,
   img: "http://reactmarathon-api.herokuapp.com/assets/kitana.gif",
 });
+
+export default  Player;
