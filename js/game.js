@@ -1,14 +1,25 @@
 import { logs, HIT, ATTACK } from "./appData.js";
-import { player1, player2 } from "./player.js";
+import Player  from "./player.js";
 import Utils from "./utils.js";
+import Request from "./api.js";
 
 const { randomNumber, getTime } = new Utils();
+const request = new Request();
+
+let player1;
+let player2;
 
 class Game {
   constructor() {
     this.$arenas = document.querySelector(".arenas");
     this.$randomButton = document.querySelector(".button");
     this.$formFight = document.querySelector(".control");
+  }
+
+  getPlayers = async () => {
+    const body = await fetch('https://reactmarathon-api.herokuapp.com/api/mk/players')
+      .then(res => res.json());
+      return body;
   }
 
   createElement(tag, className) {
@@ -142,19 +153,22 @@ class Game {
   }
 
   createSubmitListener() {
-    this.$formFight.addEventListener("submit", (e) => {
+    this.$formFight.addEventListener("submit", async (e) => {
       e.preventDefault();
-      console.log(self);
       const {
-        hit: enemyHit,
-        defence: enemyDefense,
-        value: enemyValue,
-      } = this.enemyAttack();
-      const {
-        hit: playerHit,
-        defence: playerDefence,
-        value: playerValue,
+        hit,
+        defence,
       } = this.playerAttack();
+
+      const fightAction = await request.getFight({
+        hit,
+        defence,
+      });
+
+      const {
+        player1: { hit: playerHit, defence: playerDefence, value: playerValue },
+        player2: { hit: enemyHit, defence: enemyDefense, value: enemyValue },
+      } = fightAction;
 
       if (playerHit !== enemyDefense) {
         player2.changeHP(playerValue);
@@ -181,7 +195,22 @@ class Game {
     });
   }
 
-  start() {
+  start = async (selectedPlayer) => {
+    const players = await request.getPlayers();
+    // const p1 = players[randomNumber(players.length) - 1];
+    const p2 = players[randomNumber(players.length) - 1];
+
+    player1 = new Player({
+      ...selectedPlayer,
+      player: 1,
+      rootSelector: 'arenas'
+    });
+    player2 = new Player({
+      ...p2,
+      player: 2,
+      rootSelector: 'arenas'
+    });
+
     this.$arenas.appendChild(this.createPlayer(player1));
     this.$arenas.appendChild(this.createPlayer(player2));
 
