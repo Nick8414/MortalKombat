@@ -1,8 +1,10 @@
 import { logs, HIT, ATTACK } from "./appData.js";
 import Player  from "./player.js";
 import Utils from "./utils.js";
+import Request from "./api.js";
 
 const { randomNumber, getTime } = new Utils();
+const request = new Request();
 
 let player1;
 let player2;
@@ -151,19 +153,22 @@ class Game {
   }
 
   createSubmitListener() {
-    this.$formFight.addEventListener("submit", (e) => {
+    this.$formFight.addEventListener("submit", async (e) => {
       e.preventDefault();
-      console.log(self);
       const {
-        hit: enemyHit,
-        defence: enemyDefense,
-        value: enemyValue,
-      } = this.enemyAttack();
-      const {
-        hit: playerHit,
-        defence: playerDefence,
-        value: playerValue,
+        hit,
+        defence,
       } = this.playerAttack();
+
+      const fightAction = await request.getFight({
+        hit,
+        defence,
+      });
+
+      const {
+        player1: { hit: playerHit, defence: playerDefence, value: playerValue },
+        player2: { hit: enemyHit, defence: enemyDefense, value: enemyValue },
+      } = fightAction;
 
       if (playerHit !== enemyDefense) {
         player2.changeHP(playerValue);
@@ -191,8 +196,7 @@ class Game {
   }
 
   start = async () => {
-    const players = await this.getPlayers();
-    console.log(players);
+    const players = await request.getPlayers();
     const p1 = players[randomNumber(players.length) - 1];
     const p2 = players[randomNumber(players.length) - 1];
 
