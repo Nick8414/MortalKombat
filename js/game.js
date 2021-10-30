@@ -195,13 +195,13 @@ class Game {
     });
   }
 
-  start = async () => {
+  start = async (selectedPlayer) => {
     const players = await request.getPlayers();
-    const p1 = players[randomNumber(players.length) - 1];
+    // const p1 = players[randomNumber(players.length) - 1];
     const p2 = players[randomNumber(players.length) - 1];
 
     player1 = new Player({
-      ...p1,
+      ...selectedPlayer,
       player: 1,
       rootSelector: 'arenas'
     });

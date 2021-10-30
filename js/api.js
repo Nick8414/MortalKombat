@@ -1,32 +1,3 @@
-// fetch('https://reactmarathon-api.herokuapp.com/api/mk/players')
-
-// fetch('https://reactmarathon-api.herokuapp.com/api/mk/player/choose')
-
-// fetch('http://reactmarathon-api.herokuapp.com/api/mk/player/fight', {
-// 	method: 'POST',
-// 	body: JSON.stringify({
-// 		hit,
-// 		defence,
-// })
-// })
-
-// async function getPlayers() {
-// 	const res = await fetch('https://reactmarathon-api.herokuapp.com/api/mk/players');
-// 	return await res.json();
-// }
-
-// создать отдельный класс для получения запросов
-
-// async function getPlayers() {
-//   const res = await fetch(
-//     "https://reactmarathon-api.herokuapp.com/api/mk/player/choose"
-//   );
-//   const body = await res.json();
-//   console.log(body);
-// }
-
-// getPlayers();
-
 class Request {
   request = async (url, options = {}) => {
     const response = await fetch(url, options);
